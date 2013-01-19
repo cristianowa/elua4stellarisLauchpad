@@ -18,4 +18,20 @@ doc/cache
 inc/git_version.h
 *~
 *.*~
-luac.cross*
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
