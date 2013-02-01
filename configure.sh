@@ -8,7 +8,7 @@ tar -xjvf gcc-arm-none-eabi-4_6-2012q4-20121016.tar.bz2
 #install stellarisware
 mkdir stellarisWare
 cd stellarisWare
-wget #TODO:dropbox link, still uploading
+wget https://dl.dropbox.com/u/3154805/SW-LM3S-9453.exe 
 unzip SW-EK-LM4F120XL-9453.exe
 make
 cd ..

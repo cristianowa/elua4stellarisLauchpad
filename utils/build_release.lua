@@ -16,7 +16,8 @@ local boards =
   { board = 'ATEVK1101', options = '' },
   'ET-STM32', 'EAGLE-100', 'ELUA-PUC', 'MBED',
   { board = 'MIZAR32', options = "target=lualong" },
-  { board = 'PC', options = "" }
+  { board = 'PC', options = "" },
+   'LP-LM4F120XL',
 }
 
 local function docmd( cmd )
