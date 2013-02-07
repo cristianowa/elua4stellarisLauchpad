@@ -94,7 +94,7 @@ toolchain_list['devkitarm'] = toolchain_list['arm-eabi-gcc']
 platform_list = {
   'at91sam7x' : { 'cpus' : [ 'AT91SAM7X256', 'AT91SAM7X512' ], 'toolchains' : [ 'arm-gcc', 'codesourcery', 'devkitarm', 'arm-eabi-gcc' ], 'big_endian': False },
   'lm3s' : { 'cpus' : [ 'LM3S1968', 'LM3S8962', 'LM3S6965', 'LM3S6918', 'LM3S9B92', 'LM3S9D92' ], 'toolchains' : [ 'arm-gcc', 'codesourcery', 'devkitarm', 'arm-eabi-gcc' ], 'big_endian': False },
-  'lm4f' : { 'cpus' : [ 'LM4F120' ], 'toolchains' : [ 'arm-gcc', 'codesourcery','arm-eabi-gcc' ], 'big_endian': False },
+  'lm4f' : { 'cpus' : [ 'LM4F120H5QR' ], 'toolchains' : [ 'arm-gcc', 'codesourcery','arm-eabi-gcc' ], 'big_endian': False },
   'str9' : { 'cpus' : [ 'STR912FAW44' ], 'toolchains' : [ 'arm-gcc', 'codesourcery', 'devkitarm', 'arm-eabi-gcc' ], 'big_endian': False },
   'i386' : { 'cpus' : [ 'I386' ], 'toolchains' : [ 'i686-gcc' ], 'big_endian': False },
   'sim' : { 'cpus' : [ 'LINUX' ], 'toolchains' : [ 'i686-gcc' ], 'big_endian': False },
@@ -112,7 +112,7 @@ board_list = { 'SAM7-EX256' : [ 'AT91SAM7X256', 'AT91SAM7X512' ],
                'EK-LM3S8962' : [ 'LM3S8962' ],
                'EK-LM3S6965' : [ 'LM3S6965' ],
                'EK-LM3S9B92' : [ 'LM3S9B92' ],
-               'LP-LM4F120XL' : [ 'LM4F120' ],
+               'LP-LM4F120XL' : [ 'LM4F120H5QR' ],
                'SOLDERCORE' : [ 'LM3S9D92' ],
                'STR9-COMSTICK' : [ 'STR912FAW44' ],
                'STR-E912' : [ 'STR912FAW44' ],
@@ -452,9 +452,10 @@ if not GetOption( 'help' ):
   comp[ 'INCPREFIX' ] = "-I"
   Default( comp.Program( target = output, source = source_files ) )
   Decider( 'MD5-timestamp' )
-
+  print tools
   # Programming target
   prog = Environment( BUILDERS = { 'program' : Builder( action = Action ( tools[ platform ][ 'progfunc' ] ) ) }, ENV = os.environ )
+	
   prog.program( "prog", output + ".elf" )
 
 Help(vars.GenerateHelpText(comp))
