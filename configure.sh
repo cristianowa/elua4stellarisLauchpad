@@ -11,6 +11,7 @@ cd stellarisWare
 wget https://dl.dropbox.com/u/3154805/SW-LM3S-9453.exe 
 unzip SW-EK-LM4F120XL-9453.exe
 make
+echo "you can find out stellaris code examples in the path ./stellarisware/boards/ek-lm4f120xl"
 cd ..
 #install flasher
 git clone https://github.com/utzig/lm4tools.git
@@ -23,3 +24,4 @@ echo 'export PATH= $PATH:'$PWD/ gcc-arm-none-eabi-4_6-2012q4/bin/  >>$HOME/.bash
 cd elua4stellarisLauchpad
 scons -f cross-lua.py
 scons cpu=lm3s6965 toolchain=codesourcery prog
+scons cpu=lm4f120h5qr toolchain=codesourcery prog
