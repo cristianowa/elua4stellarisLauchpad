@@ -35,3 +35,6 @@ inc/git_version.h
 *.exe
 *.out
 *.app
+
+# Ctags
+tags
