@@ -17,7 +17,7 @@ local boards =
   'ET-STM32', 'EAGLE-100', 'ELUA-PUC', 'MBED',
   { board = 'MIZAR32', options = "target=lualong" },
   { board = 'PC', options = "" },
-   'LP-LM4F120XL',
+   'EK-LM4F120XL'
 }
 
 local function docmd( cmd )
