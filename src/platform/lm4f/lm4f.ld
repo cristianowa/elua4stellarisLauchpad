@@ -1,6 +1,12 @@
+/* Note: This file is a copy of lm3s.ld with sram and flash ranges copied
+		 from stellarisware example ld files. The memory layout described in this
+		 file shall be ok for the project. */
+
 MEMORY
 {
-    sram (W!RX) : ORIGIN = 0x20000000, LENGTH = 0x00010000
+	/* In stellarisware examples: sram (rwx) */
+    sram (W!RX) : ORIGIN = 0x20000000, LENGTH = 0x00008000
+	/* In stellarisware examples: flash (rx) */
     flash (RX) : ORIGIN = 0x00000000, LENGTH = 0x00040000
 }
 
