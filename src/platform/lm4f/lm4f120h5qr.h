@@ -1,3 +1,7 @@
+/* Reference: This file was copied from stellarisware/inc/lm4f120h5qr.h.
+ *            No change was made and no change is necessary.
+ */
+
 //*****************************************************************************
 //
 // lm4f120h5qr.h - LM4F120H5QR Register Definitions
