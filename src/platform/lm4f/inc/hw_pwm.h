@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_pwm.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_pwm.h - Defines and Macros for Pulse Width Modulation (PWM) ports.

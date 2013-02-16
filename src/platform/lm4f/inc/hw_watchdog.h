@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_watchdog.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_watchdog.h - Macros used when accessing the Watchdog Timer hardware.

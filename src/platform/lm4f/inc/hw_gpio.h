@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_gpio.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_gpio.h - Defines and Macros for GPIO hardware.

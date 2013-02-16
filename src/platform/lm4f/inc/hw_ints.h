@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_ints.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_ints.h - Macros that define the interrupt assignment on Stellaris.

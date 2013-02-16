@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_qei.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_qei.h - Macros used when accessing the QEI hardware.

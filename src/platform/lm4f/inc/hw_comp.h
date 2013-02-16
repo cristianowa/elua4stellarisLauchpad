@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_comp.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_comp.h - Macros used when accessing the comparator hardware.

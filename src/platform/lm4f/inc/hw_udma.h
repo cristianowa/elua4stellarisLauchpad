@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_udma.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_udma.h - Macros for use in accessing the UDMA registers.

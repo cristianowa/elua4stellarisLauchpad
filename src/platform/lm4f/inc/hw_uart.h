@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_uart.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_uart.h - Macros and defines used when accessing the UART hardware.

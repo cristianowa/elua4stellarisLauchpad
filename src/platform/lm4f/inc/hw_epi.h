@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_epi.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_epi.h - Macros for use in accessing the EPI registers.

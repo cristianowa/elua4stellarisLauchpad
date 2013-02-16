@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_hibernate.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_hibernate.h - Defines and Macros for the Hibernation module.

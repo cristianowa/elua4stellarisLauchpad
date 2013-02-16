@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_i2c.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_i2c.h - Macros used when accessing the I2C master and slave hardware.

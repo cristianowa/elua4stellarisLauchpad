@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_ethernet.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_ethernet.h - Macros used when accessing the Ethernet hardware.

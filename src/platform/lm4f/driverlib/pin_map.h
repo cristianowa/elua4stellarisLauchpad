@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/driverlib/.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // pin_map.h - Mapping of peripherals to pins for all parts.

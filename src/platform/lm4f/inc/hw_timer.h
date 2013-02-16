@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_timer.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_timer.h - Defines and macros used when accessing the timer.

@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/driverlib/.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // ethernet.c - Driver for the Integrated Ethernet Controller

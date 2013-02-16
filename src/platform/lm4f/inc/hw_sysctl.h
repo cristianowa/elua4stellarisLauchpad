@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_sysctl.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_sysctl.h - Macros used when accessing the system control hardware.

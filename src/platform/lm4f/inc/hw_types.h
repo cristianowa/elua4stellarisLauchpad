@@ -1,7 +1,3 @@
-/* Reference: This file was copied from stellarisware/inc/hw_types.h.
- *            No change was made and no change is necessary.
- */
-
 //*****************************************************************************
 //
 // hw_types.h - Common types and macros.
