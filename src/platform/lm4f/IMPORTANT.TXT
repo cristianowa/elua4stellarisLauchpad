@@ -1,0 +1,9 @@
+/* Reference: The files and folders below were copied from the stellarisware revision 9453.
+ *            No change was made and no change is necessary.
+ * Files:
+ *		./usb_serial_structs.c (copied from stellarisware/boards/ek-lm4f120xl/usb_dev_serial/)
+ *		./usb_serial_structs.h (copied from stellarisware/boards/ek-lm4f120xl/usb_dev_serial/)
+ *		all files inside ./driverlib/ (copied from stellarisware/driverlib/)
+ *		all files inside ./inc/ (copied from stellarisware/inc/)
+ *		all files and folders of ./usblib/ (copied from stellarisware/usblib/)
+ */

@@ -2,7 +2,7 @@
 //
 // usb_serial_structs.h - Data structures defining this USB CDC device.
 //
-// Copyright (c) 2009-2011 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2012 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 // Texas Instruments (TI) is supplying this software for use solely and
@@ -18,12 +18,12 @@
 // CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
 // DAMAGES, FOR ANY REASON WHATSOEVER.
 // 
-// This is part of revision 7611 of the EK-LM3S9D92 Firmware Package.
+// This is part of revision 9453 of the EK-LM4F120XL Firmware Package.
 //
 //*****************************************************************************
 
-#ifndef __USB_SERIAL_STRUCTS_H__
-#define __USB_SERIAL_STRUCTS_H__
+#ifndef _USB_SERIAL_STRUCTS_H_
+#define _USB_SERIAL_STRUCTS_H_
 
 //*****************************************************************************
 //
@@ -46,4 +46,4 @@ extern const tUSBDCDCDevice g_sCDCDevice;
 extern unsigned char g_pucUSBTxBuffer[];
 extern unsigned char g_pucUSBRxBuffer[];
 
-#endif // __USB_SERIAL_STRUCTS_H__
+#endif

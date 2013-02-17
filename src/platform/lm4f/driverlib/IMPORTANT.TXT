@@ -1,3 +1,0 @@
-/* Reference: The files of this folder were copied from stellarisware/driverlib/.
- *            No change was made and no change is necessary.
- */
