@@ -1,9 +1,27 @@
-/* Reference: The files and folders below were copied from the stellarisware revision 9453.
- *            No change was made and no change is necessary.
- * Files:
+/* Reference: 
+ *
+ *	The files and folders below were copied from the stellarisware revision 9453.
+ *	No change was made and no change is necessary.
+ *
+ *	Files:
  *		./usb_serial_structs.c (copied from stellarisware/boards/ek-lm4f120xl/usb_dev_serial/)
  *		./usb_serial_structs.h (copied from stellarisware/boards/ek-lm4f120xl/usb_dev_serial/)
  *		all files inside ./driverlib/ (copied from stellarisware/driverlib/)
  *		all files inside ./inc/ (copied from stellarisware/inc/)
  *		all files and folders of ./usblib/ (copied from stellarisware/usblib/)
+ *
+ *
+ *	The files and folders below were removed from the project.
+ *
+ *	Files:
+ *		./rit128x96x4.h (This file is specific of EK-LM3S6965)
+ *		./rit128x96x4.c (This file is specific of EK-LM3S6965)
+ *		./debug.h (equal to driverlib/debug.h)
+ *
+ *
+ *	The file startup_gcc.c appears to be a file from an old revision of stellarisware, but no equal file was found.
+ *	This file may contain project specific code. This file will be used as it is and may suffer changes.
+ *
+ *
+ *	All other files not mentioned above are project specific (not from stellarisware) and need to be adapted.
  */
