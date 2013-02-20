@@ -37,7 +37,6 @@ static void FaultISR(void);
 static void IntDefaultHandler(void);
 
 // External interrupt handlers
-extern void EthernetIntHandler();
 extern void SysTickIntHandler();
 extern void ADCIntHandler();
 extern void UARTIntHandler();

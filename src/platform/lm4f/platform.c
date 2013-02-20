@@ -41,7 +41,6 @@
 #include "elua_net.h"
 #include "dhcpc.h"
 #include "buf.h"
-#include "rit128x96x4.h"
 #include "disp.h"
 #include "utils.h"
 
@@ -449,7 +448,8 @@ const u32 uart_base[] = { UART0_BASE, UART1_BASE, UART2_BASE };
 static const u32 uart_sysctl[] = { SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1, SYSCTL_PERIPH_UART2 };
 static const u32 uart_gpio_base[] = { GPIO_PORTA_BASE, GPIO_PORTD_BASE, GPIO_PORTG_BASE };
 static const u8 uart_gpio_pins[] = { GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_2 | GPIO_PIN_3, GPIO_PIN_0 | GPIO_PIN_1 };
-static const u32 uart_gpiofunc[] = { GPIO_PA0_U0RX, GPIO_PA1_U0TX, GPIO_PD2_U1RX, GPIO_PD3_U1TX, GPIO_PG0_U2RX, GPIO_PG1_U2TX };
+//TODO : Checkout LM4F PIN #ISSUE15
+//static const u32 uart_gpiofunc[] = { GPIO_PA0_U0RX, GPIO_PA1_U0TX, GPIO_PD2_U1RX, GPIO_PD3_U1TX, GPIO_PG0_U2RX, GPIO_PG1_U2TX };
 
 static void uarts_init()
 {
@@ -464,10 +464,10 @@ u32 platform_uart_setup( unsigned id, u32 baud, int databits, int parity, int st
 
   if( id < NUM_UART )
   {
-    MAP_GPIOPinConfigure( uart_gpiofunc[ id << 1 ] );
-    MAP_GPIOPinConfigure( uart_gpiofunc[ ( id << 1 ) + 1 ] );
-    MAP_GPIOPinTypeUART( uart_gpio_base[ id ], uart_gpio_pins[ id ] );
-
+//    MAP_GPIOPinConfigure( uart_gpiofunc[ id << 1 ] );
+ //   MAP_GPIOPinConfigure( uart_gpiofunc[ ( id << 1 ) + 1 ] );
+ //   MAP_GPIOPinTypeUART( uart_gpio_base[ id ], uart_gpio_pins[ id ] );
+//TODO: #ISSUE15
     switch( databits )
     {
       case 5:
@@ -941,216 +941,6 @@ int platform_adc_start_sequence()
 
 #endif // ifdef BUILD_ADC
 
-// ****************************************************************************
-// Support for specific onboard devices on 
-// Texas Instruments / Luminary Micro kits.
-//
-// FIXME: This was previously tied to the "disp" module but should be renamed in the future
-//        to include support for initialization of other onboard devices of the EK-LM3Sxxxx kits.
-//        Note that not all kits have all devices available.
-
-void lm3s_disp_init( unsigned long freq )
-{
-  RIT128x96x4Init( freq );
-}
-
-void lm3s_disp_clear()
-{
-  RIT128x96x4Clear();
-}
-
-void lm3s_disp_stringDraw( const char *str, unsigned long x, unsigned long y, unsigned char level )
-{
-  RIT128x96x4StringDraw( str, x, y, level );
-}
-
-void lm3s_disp_imageDraw( const unsigned char *img, unsigned long x, unsigned long y,
-                              unsigned long width, unsigned long height )
-{
-  RIT128x96x4ImageDraw( img, x, y, width, height );
-}
-
-
-void lm3s_disp_enable( unsigned long freq )
-{
-  RIT128x96x4Enable( freq );
-}
-
-void lm3s_disp_disable()
-{
-  RIT128x96x4Disable();
-}
-
-void lm3s_disp_displayOn()
-{
-  RIT128x96x4DisplayOn();
-}
-
-void lm3s_disp_displayOff()
-{
-  RIT128x96x4DisplayOff();
-}
-
-
-// ****************************************************************************
-// Ethernet functions
-
-static void eth_init()
-{
-#ifdef BUILD_UIP
-  u32 user0, user1, temp;
-  static struct uip_eth_addr sTempAddr;
-
-  // Enable and reset the controller
-  MAP_SysCtlPeripheralEnable( SYSCTL_PERIPH_ETH );
-  MAP_SysCtlPeripheralReset( SYSCTL_PERIPH_ETH );
-
-#if defined( FORLM3S9B92 ) || defined(FORLM3S9D92)
-  GPIOPinConfigure(GPIO_PF2_LED1);
-  GPIOPinConfigure(GPIO_PF3_LED0);
-#endif
-
-  // Enable Ethernet LEDs
-  MAP_GPIODirModeSet( GPIO_PORTF_BASE, GPIO_PIN_2 | GPIO_PIN_3, GPIO_DIR_MODE_HW );
-  MAP_GPIOPadConfigSet( GPIO_PORTF_BASE, GPIO_PIN_2 | GPIO_PIN_3, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD );
-
-  // Configure SysTick for a periodic interrupt.
-  MAP_SysTickPeriodSet( MAP_SysCtlClockGet() / SYSTICKHZ);
-  MAP_SysTickEnable();
-  MAP_SysTickIntEnable();
-
-  // Intialize the Ethernet Controller and disable all Ethernet Controller interrupt sources.
-  MAP_EthernetIntDisable(ETH_BASE, (ETH_INT_PHY | ETH_INT_MDIO | ETH_INT_RXER |
-                     ETH_INT_RXOF | ETH_INT_TX | ETH_INT_TXER | ETH_INT_RX));
-  temp = MAP_EthernetIntStatus(ETH_BASE, false);
-  MAP_EthernetIntClear(ETH_BASE, temp);
-
-  // Initialize the Ethernet Controller for operation.
-  MAP_EthernetInitExpClk(ETH_BASE, MAP_SysCtlClockGet());
-
-  // Configure the Ethernet Controller for normal operation.
-  // - Full Duplex
-  // - TX CRC Auto Generation
-  // - TX Padding Enabled
-  MAP_EthernetConfigSet(ETH_BASE, (ETH_CFG_TX_DPLXEN | ETH_CFG_TX_CRCEN | ETH_CFG_TX_PADEN));
-
-  // Enable the Ethernet Controller.
-  MAP_EthernetEnable(ETH_BASE);
-
-  // Enable the Ethernet interrupt.
-  MAP_IntEnable(INT_ETH);
-
-  // Enable the Ethernet RX Packet interrupt source.
-  MAP_EthernetIntEnable(ETH_BASE, ETH_INT_RX);
-
-  // Enable all processor interrupts.
-  MAP_IntMasterEnable();
-
-  // Configure the hardware MAC address for Ethernet Controller filtering of
-  // incoming packets.
-  //
-  // For the Ethernet Eval Kits, the MAC address will be stored in the
-  // non-volatile USER0 and USER1 registers.  These registers can be read
-  // using the FlashUserGet function, as illustrated below.
-
-
-#if defined( ELUA_BOARD_SOLDERCORE )
-  user0 = 0x00b61a00;
-  user1 = 0x006d0a00;
-#else
-  MAP_FlashUserGet(&user0, &user1);
-#endif
-  
-
-  // Convert the 24/24 split MAC address from NV ram into a 32/16 split MAC
-  // address needed to program the hardware registers, then program the MAC
-  // address into the Ethernet Controller registers.
-  sTempAddr.addr[0] = ((user0 >>  0) & 0xff);
-  sTempAddr.addr[1] = ((user0 >>  8) & 0xff);
-  sTempAddr.addr[2] = ((user0 >> 16) & 0xff);
-  sTempAddr.addr[3] = ((user1 >>  0) & 0xff);
-  sTempAddr.addr[4] = ((user1 >>  8) & 0xff);
-  sTempAddr.addr[5] = ((user1 >> 16) & 0xff);
-
-  // Program the hardware with it's MAC address (for filtering).
-  MAP_EthernetMACAddrSet(ETH_BASE, (unsigned char *)&sTempAddr);
-
-  // Initialize the eLua uIP layer
-  elua_uip_init( &sTempAddr );
-#endif
-}
-
-#ifdef BUILD_UIP
-static int eth_timer_fired;
-
-void platform_eth_send_packet( const void* src, u32 size )
-{
-  MAP_EthernetPacketPut( ETH_BASE, uip_buf, uip_len );
-}
-
-u32 platform_eth_get_packet_nb( void* buf, u32 maxlen )
-{
-  return MAP_EthernetPacketGetNonBlocking( ETH_BASE, uip_buf, sizeof( uip_buf ) );
-}
-
-void platform_eth_force_interrupt()
-{
-  NVIC_SW_TRIG_R |= INT_ETH - 16;
-}
-
-u32 platform_eth_get_elapsed_time()
-{
-  if( eth_timer_fired )
-  {
-    eth_timer_fired = 0;
-    return SYSTICKMS;
-  }
-  else
-    return 0;
-}
-
-void SysTickIntHandler()
-{
-  // Handle virtual timers
-  cmn_virtual_timer_cb();
-
-  // Indicate that a SysTick interrupt has occurred.
-  eth_timer_fired = 1;
-
-  // Generate a fake Ethernet interrupt.  This will perform the actual work
-  // of incrementing the timers and taking the appropriate actions.
-  platform_eth_force_interrupt();
-
-  // System timer handling
-  cmn_systimer_periodic();
-}
-
-void EthernetIntHandler()
-{
-  u32 temp;
-
-  // Read and Clear the interrupt.
-  temp = EthernetIntStatus( ETH_BASE, false );
-  EthernetIntClear( ETH_BASE, temp );
-
-  // Call the UIP main loop
-  elua_uip_mainloop();
-}
-
-#else  // #ifdef ELUA_UIP
-
-void SysTickIntHandler()
-{
-  cmn_virtual_timer_cb();
-
-  // System timer handling
-  cmn_systimer_periodic();
-}
-
-void EthernetIntHandler()
-{
-}
-#endif // #ifdef ELUA_UIP
 
 // ****************************************************************************
 // USB functions
@@ -1366,7 +1156,7 @@ int platform_flash_erase_sector( u32 sector_id )
 #include "lrodefs.h"
 
 extern const LUA_REG_TYPE disp_map[];
-extern const LUA_REG_TYPE lm3s_pio_map[];
+extern const LUA_REG_TYPE lm4f_pio_map[];
 
 const LUA_REG_TYPE platform_map[] =
 {
@@ -1375,7 +1165,7 @@ const LUA_REG_TYPE platform_map[] =
   { LSTRKEY( "disp" ), LROVAL( disp_map ) },
 #endif
 #ifdef ENABLE_LM3S_GPIO
-  { LSTRKEY( "pio" ), LROVAL( lm3s_pio_map ) },
+  { LSTRKEY( "pio" ), LROVAL( lm4f_pio_map ) },
 #endif
 #endif
   { LNILKEY, LNILVAL }
@@ -1393,7 +1183,7 @@ LUALIB_API int luaopen_platform( lua_State *L )
   luaL_register( L, NULL, disp_map );
   lua_setfield( L, -2, "disp" );
   lua_newtable( L );
-  luaL_register( L, NULL, lm3s_pio_map );
+  luaL_register( L, NULL, lm4f_pio_map );
   lua_setfield( L, -2, "pio" );
 
   return 1;

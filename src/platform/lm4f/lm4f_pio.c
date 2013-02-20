@@ -9,6 +9,7 @@
 #include "inc/hw_gpio.h"
 #include "pin_map.h"
 #include "gpio.h"
+#include "pin_map.h"
 #include "auxmods.h"
 #include <string.h>
 
@@ -141,7 +142,7 @@ typedef struct
   u32 val;
 } LM4F_PIN_DATA;
 
-#define _M( x )   { #x, GPIO_##x }
+	#define _M( x )   { #x, #x }
 static const LM4F_PIN_DATA lm4f_pin_data[] = 
 {
   LM4F_ALTERNATE_FUNCTIONS

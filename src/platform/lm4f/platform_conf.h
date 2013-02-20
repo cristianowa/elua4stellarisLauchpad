@@ -29,12 +29,6 @@
   #define BUILD_USB_CDC
 #endif
 
-#if !defined( FORLM3S1968 ) && !defined( ELUA_BOARD_EKLM3S9D92 )
-  #define BUILD_UIP
-  #define BUILD_DHCPC
-  #define BUILD_DNS
-#endif
-
 #define BUILD_LINENOISE
 
 #define BUILD_ADC
@@ -45,11 +39,6 @@
   #define BUILD_CON_GENERIC
 //#endif
 #define BUILD_C_INT_HANDLERS
-#ifdef ELUA_BOARD_EKLM3S9D92
-#define BUILD_LUA_INT_HANDLERS
-#define PLATFORM_INT_QUEUE_LOG_SIZE 5
-#endif
-
 #define PLATFORM_HAS_SYSTIMER
 #define PLATFORM_TMR_COUNTS_DOWN
 
@@ -57,7 +46,7 @@
 #define BUILD_WOFS
 #endif
 
-#define ENABLE_LM3S_GPIO
+#define ENABLE_LM4F_GPIO
 
 #define LINENOISE_HISTORY_SIZE_LUA    30
 #define LINENOISE_HISTORY_SIZE_SHELL  10
@@ -80,8 +69,8 @@
 
 // The name of the platform specific libs table
 // FIXME: should handle partial or no inclusion of platform specific modules per conf.py
-#if defined( ENABLE_DISP ) || defined( ENABLE_LM3S_GPIO )
-#define PS_LIB_TABLE_NAME   "lm3s"
+#if defined( ENABLE_DISP ) || defined( ENABLE_LM4F_GPIO )
+#define PS_LIB_TABLE_NAME   "lm4f"
 #endif
 
 #if defined( FORLM3S8962 ) || defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
