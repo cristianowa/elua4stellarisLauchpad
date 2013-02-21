@@ -1145,7 +1145,7 @@ int platform_flash_erase_sector( u32 sector_id )
 // ****************************************************************************
 // Platform specific modules go here
 
-#if defined( ENABLE_DISP ) || defined( ENABLE_LM3S_GPIO )
+#if defined( ENABLE_DISP ) || defined( ENABLE_LM4F_GPIO )
 
 #define MIN_OPT_LEVEL 2
 #include "lrodefs.h"
