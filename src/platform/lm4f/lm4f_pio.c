@@ -142,7 +142,7 @@ typedef struct
   u32 val;
 } LM4F_PIN_DATA;
 
-	#define _M( x )   { #x, #x }
+	#define _M( x )   { #x, GPIO_##x }
 static const LM4F_PIN_DATA lm4f_pin_data[] = 
 {
   LM4F_ALTERNATE_FUNCTIONS

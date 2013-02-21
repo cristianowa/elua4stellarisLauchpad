@@ -168,7 +168,7 @@ void (* const g_pfnVectors[])(void) =
 #endif
     IntDefaultHandler,                      // CAN1
     IntDefaultHandler,                      // CAN2
-    EthernetIntHandler,                     // Ethernet
+    IntDefaultHandler,      		    // Ethernet
 #if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
     IntDefaultHandler,                      // Hibernate
 #if defined( BUILD_USB_CDC )
@@ -319,4 +319,13 @@ IntDefaultHandler(void)
     {
       UARTCharPut( UART0_BASE, '*' );
     }
+}
+
+void SysTickIntHandler()
+{
+  // Handle virtual timers
+  cmn_virtual_timer_cb();
+
+  // System timer handling
+  cmn_systimer_periodic();
 }

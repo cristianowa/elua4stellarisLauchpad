@@ -19,6 +19,10 @@
   #define BUILD_TERM
 //#endif
 
+// defining processor part
+//TODO: make this code more reliable
+#define PART_LM4F120B2QR
+
 #define BUILD_SHELL
 #define BUILD_ROMFS
 #ifndef ELUA_BOARD_EKLM3S9D92
@@ -36,7 +40,7 @@
 //#if defined( ELUA_BOARD_SOLDERCORE )
 //  #define BUILD_CON_TCP
 //#else
-  #define BUILD_CON_GENERIC
+//  #define BUILD_CON_GENERIC
 //#endif
 #define BUILD_C_INT_HANDLERS
 #define PLATFORM_HAS_SYSTIMER

@@ -34,7 +34,6 @@
 #include "driverlib/timer.h"
 #include "driverlib/pwm.h"
 #include "driverlib/adc.h"
-#include "driverlib/ethernet.h"
 #include "driverlib/systick.h"
 #include "driverlib/flash.h"
 #include "driverlib/interrupt.h"
@@ -86,7 +85,6 @@ static void uarts_init();
 static void spis_init();
 static void pios_init();
 static void pwms_init();
-static void eth_init();
 static void adcs_init();
 static void cans_init();
 static void usb_init();
@@ -133,9 +131,6 @@ int platform_init()
   // Setup system timer
   cmn_systimer_set_base_freq( MAP_SysCtlClockGet() );
   cmn_systimer_set_interrupt_freq( SYSTICKHZ );
-
-  // Setup ethernet (TCP/IP)
-  eth_init();
 
   // Common platform initialization code
   cmn_platform_init();
@@ -1199,3 +1194,11 @@ LUALIB_API int luaopen_platform( lua_State *L )
 
 #endif // #if defined( ENABLE_DISP ) || defined( ENABLE_LM3S_GPIO )
 
+void SysTickIntHandler()
+{
+  // Handle virtual timers
+  cmn_virtual_timer_cb();
+
+  // System timer handling
+  cmn_systimer_periodic();
+}
