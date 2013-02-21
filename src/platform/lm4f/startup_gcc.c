@@ -321,11 +321,4 @@ IntDefaultHandler(void)
     }
 }
 
-void SysTickIntHandler()
-{
-  // Handle virtual timers
-  cmn_virtual_timer_cb();
 
-  // System timer handling
-  cmn_systimer_periodic();
-}
