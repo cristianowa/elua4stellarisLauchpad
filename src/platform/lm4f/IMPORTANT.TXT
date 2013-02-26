@@ -4,6 +4,7 @@
  *	No change was made and no change is necessary.
  *
  *	Files:
+ *		./lm4f120h5qr.h (copied from stellarisware)
  *		./usb_serial_structs.c (copied from stellarisware/boards/ek-lm4f120xl/usb_dev_serial/)
  *		./usb_serial_structs.h (copied from stellarisware/boards/ek-lm4f120xl/usb_dev_serial/)
  *		all files inside ./driverlib/ (copied from stellarisware/driverlib/)
@@ -17,11 +18,31 @@
  *		./rit128x96x4.h (This file is specific of EK-LM3S6965)
  *		./rit128x96x4.c (This file is specific of EK-LM3S6965)
  *		./debug.h (equal to driverlib/debug.h)
+ *		./disp.h (This file is specific of LM3S boards)
+ *		./disp.c (This file is specific of LM3S boards)
  *
  *
  *	The file startup_gcc.c appears to be a file from an old revision of stellarisware, but no equal file was found.
  *	This file may contain project specific code. This file will be used as it is and may suffer changes.
  *
+ *  The files below are already fully adapted to the project. They may need minor changes.
  *
- *	All other files not mentioned above are project specific (not from stellarisware) and need to be adapted.
+ *	Files:
+ *		./conf.lua
+ *		./conf.py
+ *		./flash_conf.h
+ *		./lm4f.ld
+ *		./lm4f_pio.c
+ *
+ *	The files below were not touched or were partially adapted to the project. CONCENTRATE your EFFORTS in these files.
+ *
+ *	Files:
+ *		./platform.c
+ *		./platform_conf.h
+ *		./platform_int.c
+ *		./stacks.h
+ *		./startup_gcc.c
+ *		./type.h
+ *		./uip-conf.h
+ *
  */

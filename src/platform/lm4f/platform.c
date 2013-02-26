@@ -40,24 +40,10 @@
 #include "elua_net.h"
 #include "dhcpc.h"
 #include "buf.h"
-#include "disp.h"
 #include "utils.h"
 
-#if defined( FORLM3S9B92 )
-  #define TARGET_IS_TEMPEST_RB1
-
-  #include "lm3s9b92.h"
-#elif defined( FORLM3S9D92 )
-  #define TARGET_IS_FIRESTORM_RA2
-
-  #include "lm3s9d92.h"
-#elif defined( FORLM3S8962 )
-  #include "lm3s8962.h"
-#elif defined( FORLM3S6965 )
-  #include "lm3s6965.h"
-#elif defined( FORLM3S6918 )
-  #include "lm3s6918.h"
-#endif
+// Target is LM4F120H5QR
+#include "lm4f120h5qr.h"
 
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
@@ -70,6 +56,7 @@
 #include "usblib/device/usbdcdc.h"
 #include "usb_serial_structs.h"
 
+// TODO: Verify the UIP defines below (SYSTICK defines)
 // UIP sys tick data
 // NOTE: when using virtual timers, SYSTICKHZ and VTMR_FREQ_HZ should have the
 // same value, as they're served by the same timer (the systick)
@@ -92,11 +79,9 @@ static void usb_init();
 int platform_init()
 {
   // Set the clocking to run from PLL
-#if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
-  MAP_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
-#else
+  // TODO: Verify this for LM4F120H5QR.
   MAP_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_8MHZ);
-#endif
+
 
   // Setup PIO
   pios_init();
@@ -113,22 +98,17 @@ int platform_init()
   // Setup PWMs
   pwms_init();
 
-#ifdef BUILD_ADC
   // Setup ADCs
   adcs_init();
-#endif
 
-#ifdef BUILD_CAN
   // Setup CANs
   cans_init();
-#endif
 
-#ifdef BUILD_USB_CDC
   // Setup USB
   usb_init();
-#endif
 
   // Setup system timer
+  // TODO: Verify this for LM4F120H5QR.  
   cmn_systimer_set_base_freq( MAP_SysCtlClockGet() );
   cmn_systimer_set_interrupt_freq( SYSTICKHZ );
 
