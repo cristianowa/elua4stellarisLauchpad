@@ -42,6 +42,4 @@ cd ../../
 cd elua4stellarisLauchpad
 scons -f cross-lua.py
 scons cpu=lm3s6965 toolchain=codesourcery prog
-
-echo 'TODO: the compilation for lm4f120h5qr is broken. Fix it and after add to the script.'
-#scons cpu=lm4f120h5qr toolchain=codesourcery prog
+scons cpu=lm4f120h5qr toolchain=codesourcery prog

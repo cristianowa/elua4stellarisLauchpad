@@ -1,5 +1,3 @@
-// AVR32 interrupt support
-
 #include "platform_conf.h"
 #if defined( BUILD_C_INT_HANDLERS ) || defined( BUILD_LUA_INT_HANDLERS )
 
@@ -9,21 +7,8 @@
 #include "common.h"
 
 // Platform includes
-#if defined( FORLM3S9B92 )
-  #define TARGET_IS_TEMPEST_RB1
-
-  #include "lm3s9b92.h"
-#elif defined( FORLM3S9D92 )
-  #define TARGET_IS_FIRESTORM_RA2
-
-  #include "lm3s9d92.h"
-#elif defined( FORLM3S8962 )
-  #include "lm3s8962.h"
-#elif defined( FORLM3S6965 )
-  #include "lm3s6965.h"
-#elif defined( FORLM3S6918 )
-  #include "lm3s6918.h"
-#endif
+// Target is LM4F120H5QR
+#include "lm4f120h5qr.h"
 
 #include "rom.h"
 #include "rom_map.h"
@@ -45,10 +30,11 @@
 extern const u32 uart_base[];
 extern const u32 pio_base[];
 static const int uart_int_mask = UART_INT_RX | UART_INT_RT;
-static const u8 gpio_int_ids[] = { INT_GPIOA, INT_GPIOB, INT_GPIOC, INT_GPIOD, INT_GPIOE, INT_GPIOF,
-                                   INT_GPIOG, INT_GPIOH, INT_GPIOJ };
+
+// LM4F120H5QR has 6 ports
+static const u8 gpio_int_ids[] = { INT_GPIOA, INT_GPIOB, INT_GPIOC, INT_GPIOD, INT_GPIOE, INT_GPIOF};
 extern const u32 timer_base[];
-extern u8 lm3s_timer_int_periodic_flag[ NUM_TIMER ];
+extern u8 lm4f_timer_int_periodic_flag[ NUM_TIMER ];
 static const u8 timer_int_ids[] = { INT_TIMER0A, INT_TIMER1A, INT_TIMER2A, INT_TIMER3A };
 
 // ----------------------------------------------------------------------------
@@ -151,7 +137,7 @@ static void tmr_common_handler( elua_int_resnum id )
   u32 base = timer_base[ id ];
 
   MAP_TimerIntClear( base, TIMER_TIMA_TIMEOUT );
-  if( lm3s_timer_int_periodic_flag[ id ] != PLATFORM_TIMER_INT_CYCLIC )
+  if( lm4f_timer_int_periodic_flag[ id ] != PLATFORM_TIMER_INT_CYCLIC )
   {
     MAP_TimerIntDisable( base, TIMER_TIMA_TIMEOUT );
     MAP_TimerLoadSet( base, TIMER_A, 0xFFFFFFFF );
@@ -399,12 +385,16 @@ void platform_int_init()
   unsigned i;
 
   MAP_IntEnable( INT_UART0 );
-  MAP_IntEnable( INT_UART1 );
-  MAP_IntEnable( INT_UART2 );
+
+  // TODO: Disabled other non UART0 ints
+  //MAP_IntEnable( INT_UART1 );
+  //MAP_IntEnable( INT_UART2 );
   for( i = 0; i < sizeof( gpio_int_ids ) / sizeof( u8 ); i ++ )
     MAP_IntEnable( gpio_int_ids[ i ] ) ;
-  for( i = 0; i < sizeof( timer_int_ids ) / sizeof( u8 ); i ++ )
-    MAP_IntEnable( timer_int_ids[ i ] );
+
+  // TODO: Timers disabled
+  //for( i = 0; i < sizeof( timer_int_ids ) / sizeof( u8 ); i ++ )
+  //  MAP_IntEnable( timer_int_ids[ i ] );
 }
 
 // ****************************************************************************
@@ -442,16 +432,6 @@ void gpioe_handler()
 }
 
 void gpiof_handler()
-{
-}
-
-void gpiog_handler()
-{
-
-void gpioh_handler()
-{
-
-void gpioj_handler()
 {
 }
 

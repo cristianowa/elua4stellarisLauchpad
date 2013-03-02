@@ -25,24 +25,26 @@
 
 #define BUILD_SHELL
 #define BUILD_ROMFS
-#ifndef ELUA_BOARD_EKLM3S9D92
 #define BUILD_MMCFS
-#endif
 
-#if defined( ELUA_BOARD_SOLDERCORE )
-  #define BUILD_USB_CDC
-#endif
+// TODO: I'll leave USB CDC disabled. This will change in future.
+//#if defined( ELUA_BOARD_SOLDERCORE )
+//  #define BUILD_USB_CDC
+//#endif
 
 #define BUILD_LINENOISE
 
 #define BUILD_ADC
 #define BUILD_RPC
-//#if defined( ELUA_BOARD_SOLDERCORE )
-//  #define BUILD_CON_TCP
-//#else
-  #define BUILD_CON_GENERIC
-//#endif
+
+#define BUILD_CON_GENERIC
+
 #define BUILD_C_INT_HANDLERS
+
+// TODO: discover if the defines below are necessary
+//#define BUILD_LUA_INT_HANDLERS
+//#define PLATFORM_INT_QUEUE_LOG_SIZE 5
+
 #define PLATFORM_HAS_SYSTIMER
 #define PLATFORM_TMR_COUNTS_DOWN
 
@@ -58,11 +60,7 @@
 // *****************************************************************************
 // UART/Timer IDs configuration data (used in main.c)
 
-#if defined( ELUA_BOARD_SOLDERCORE )
-#define CON_UART_ID         CDC_UART_ID
-#else
 #define CON_UART_ID           0
-#endif
 
 #define CON_UART_SPEED        115200
 #define TERM_LINES            25
@@ -73,10 +71,11 @@
 
 // The name of the platform specific libs table
 // FIXME: should handle partial or no inclusion of platform specific modules per conf.py
-#if defined( ENABLE_DISP ) || defined( ENABLE_LM4F_GPIO )
+#if defined( ENABLE_LM4F_GPIO )
 #define PS_LIB_TABLE_NAME   "lm4f"
 #endif
 
+// TODO: Adapt or remove these CANLINE and PWNLINE defines
 #if defined( FORLM3S8962 ) || defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
 #define CANLINE  _ROM( AUXLIB_CAN, luaopen_can, can_map )
 #define BUILD_CAN
@@ -149,41 +148,19 @@
 // *****************************************************************************
 // Configuration data
 
-// Static TCP/IP configuration
-#define ELUA_CONF_IPADDR0     192
-#define ELUA_CONF_IPADDR1     168
-#define ELUA_CONF_IPADDR2     100
-#define ELUA_CONF_IPADDR3     90
-
-#define ELUA_CONF_NETMASK0    255
-#define ELUA_CONF_NETMASK1    255
-#define ELUA_CONF_NETMASK2    255
-#define ELUA_CONF_NETMASK3    0
-
-#define ELUA_CONF_DEFGW0      192
-#define ELUA_CONF_DEFGW1      168
-#define ELUA_CONF_DEFGW2      100
-#define ELUA_CONF_DEFGW3      20
-
-#define ELUA_CONF_DNS0        192
-#define ELUA_CONF_DNS1        168
-#define ELUA_CONF_DNS2        100
-#define ELUA_CONF_DNS3        20
-
-// *****************************************************************************
-// Configuration data
-
 // Virtual timers (0 if not used)
-#define VTMR_NUM_TIMERS       4
+#define VTMR_NUM_TIMERS       0
 #define VTMR_FREQ_HZ          5
 
 // Number of resources (0 if not available/not implemented)
+// TODO: Study the amount of resources of LM4F120H5QR. The code below, until the end of file,
+// was left almost untouched.
 #if defined(FORLM3S1968)
   #define NUM_PIO             8
 #elif defined(FORLM3S9B92) || defined( FORLM3S9D92 )
   #define NUM_PIO             9
 #else
-  #define NUM_PIO             7
+  #define NUM_PIO             6
 #endif
 #if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
   #define NUM_SPI            2
@@ -195,7 +172,8 @@
 #elif defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
   #define NUM_UART            3
 #else
-  #define NUM_UART            2
+// TODO: Only UART0 is configured at this moment, so left 1 below.
+  #define NUM_UART            1
 #endif
 #define NUM_TIMER             4
 #if defined( FORLM3S6918 )
@@ -269,24 +247,25 @@
 #elif defined(FORLM3S9B92) || defined( FORLM3S9D92 )
   #define PIO_PIN_ARRAY         { 8, 8, 8, 8, 8, 6, 8, 8, 8 }
 #else
-  #define PIO_PIN_ARRAY         { 8, 8, 8, 8, 4, 4, 2 }
+// TODO: must review this PIO_PIN_ARRAY. I changed him based on LM4F_ALTERNATE_FUNCTIONS.
+  #define PIO_PIN_ARRAY         { 8, 8, 8, 8, 6, 5 }
 #endif
 //                                A, B, C, D, E, F, G, H, J
 
 #if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
   #define SRAM_SIZE ( 0x18000 )
 #else
-  #define SRAM_SIZE ( 0x10000 )
+  #define SRAM_SIZE ( 0x08000 )
 #endif
 
 // Flash data (only for LM3S8962 for now)
-#ifdef ELUA_CPU_LM3S8962
+//#ifdef ELUA_CPU_LM3S8962
 #define INTERNAL_FLASH_SIZE             ( 256 * 1024 )
 #define INTERNAL_FLASH_WRITE_UNIT_SIZE  4
 #define INTERNAL_FLASH_SECTOR_SIZE      1024
 #define INTERNAL_FLASH_START_ADDRESS    0
 #define BUILD_WOFS
-#endif // #ifdef ELUA_CPU_LM3S8962
+//#endif // #ifdef ELUA_CPU_LM3S8962
 
 // Allocator data: define your free memory zones here in two arrays
 // (start address and end address)

@@ -22,10 +22,7 @@
  *		./disp.c (This file is specific of LM3S boards)
  *
  *
- *	The file startup_gcc.c appears to be a file from an old revision of stellarisware, but no equal file was found.
- *	This file may contain project specific code. This file will be used as it is and may suffer changes.
- *
- *  The files below are already fully adapted to the project. They may need minor changes.
+ *  The files below are project specific files. Change these files to implement features.
  *
  *	Files:
  *		./conf.lua
@@ -33,16 +30,16 @@
  *		./flash_conf.h
  *		./lm4f.ld
  *		./lm4f_pio.c
- *
- *	The files below were not touched or were partially adapted to the project. CONCENTRATE your EFFORTS in these files.
- *
- *	Files:
  *		./platform.c
  *		./platform_conf.h
  *		./platform_int.c
  *		./stacks.h
- *		./startup_gcc.c
+ *		./startup_gcc.c (this a modified stellarisware file)
  *		./type.h
+ *
+ *	The file below is not used by the project, but was left for future implementations.
+ *
+ *	Files:
  *		./uip-conf.h
  *
  */

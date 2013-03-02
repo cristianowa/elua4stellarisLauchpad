@@ -37,7 +37,6 @@ static void FaultISR(void);
 static void IntDefaultHandler(void);
 
 // External interrupt handlers
-extern void SysTickIntHandler();
 extern void ADCIntHandler();
 extern void UARTIntHandler();
 
@@ -58,9 +57,6 @@ extern void gpioc_handler();
 extern void gpiod_handler();
 extern void gpioe_handler();
 extern void gpiof_handler();
-extern void gpiog_handler();
-extern void gpioh_handler();
-extern void gpioj_handler();
 extern void tmr0_handler();
 extern void tmr1_handler();
 extern void tmr2_handler();
@@ -83,6 +79,8 @@ extern int main(void);
 // ensure that it ends up at physical address 0x0000.0000.
 //
 //*****************************************************************************
+
+// TODO: This vector table was left untouched. It's probably wrong.
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) =
 {
@@ -102,7 +100,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
-    SysTickIntHandler,                      // The SysTick handler
+    IntDefaultHandler,                      // The SysTick handler
     gpioa_handler,                          // GPIO Port A
     gpiob_handler,                          // GPIO Port B
     gpioc_handler,                          // GPIO Port C
@@ -149,8 +147,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
     gpiof_handler,                          // GPIO Port F
-    gpiog_handler,                          // GPIO Port G
-    gpioh_handler,                          // GPIO Port H
+    IntDefaultHandler,                          // GPIO Port G
+    IntDefaultHandler,                          // GPIO Port H
 #if defined( BUILD_C_INT_HANDLERS ) || defined( BUILD_LUA_INT_HANDLERS )
     uart2_handler,                          // UART2 Rx and Tx
 #else    
@@ -320,5 +318,3 @@ IntDefaultHandler(void)
       UARTCharPut( UART0_BASE, '*' );
     }
 }
-
-
