@@ -131,18 +131,11 @@ void gpioj_handler()
 
 // ----------------------------------------------------------------------------
 // Timer interrupts
+// TODO: timer support not implemented yet.
 
 static void tmr_common_handler( elua_int_resnum id )
 {
-  u32 base = timer_base[ id ];
 
-  MAP_TimerIntClear( base, TIMER_TIMA_TIMEOUT );
-  if( lm4f_timer_int_periodic_flag[ id ] != PLATFORM_TIMER_INT_CYCLIC )
-  {
-    MAP_TimerIntDisable( base, TIMER_TIMA_TIMEOUT );
-    MAP_TimerLoadSet( base, TIMER_A, 0xFFFFFFFF );
-  }
-  cmn_int_handler( INT_TMR_MATCH, id );
 }
 
 void tmr0_handler()
@@ -339,42 +332,23 @@ static int int_gpio_negedge_get_flag( elua_int_resnum resnum, int clear )
 
 // ****************************************************************************
 // Interrupt: INT_TMR_MATCH
+// TODO: timer support not implemented yet.
 
 #define tmr_is_enabled( base )  ( ( HWREG( base + TIMER_O_CTL ) & TIMER_CTL_TAEN ) != 0 )
 
 static int int_tmr_match_get_status( elua_int_resnum resnum )
 {
-  u32 base = timer_base[ resnum ];
-
-  return ( tmr_is_enabled( base ) && ( HWREG( base + TIMER_O_IMR ) & TIMER_TIMA_TIMEOUT ) ) ? 1 : 0;
+  return 0;
 }
 
 static int int_tmr_match_set_status( elua_int_resnum resnum, int status )
 {
-  int prev = int_tmr_match_get_status( resnum );
-  u32 base = timer_base[ resnum ];
-
-  if( status == PLATFORM_CPU_ENABLE )
-  {
-    MAP_TimerEnable( base, TIMER_A );
-    MAP_TimerIntEnable( base, TIMER_TIMA_TIMEOUT );
-  }
-  else
-  {
-    MAP_TimerIntDisable( base, TIMER_TIMA_TIMEOUT );
-    MAP_TimerDisable( base, TIMER_A );
-  }
-  return prev;
+  return 0;
 }
 
 static int int_tmr_match_get_flag( elua_int_resnum resnum, int clear )
 {
-  u32 base = timer_base[ resnum ];
-  int status = MAP_TimerIntStatus( base, true ) & TIMER_TIMA_TIMEOUT;
-
-  if( clear )
-    MAP_TimerIntClear( base, TIMER_TIMA_TIMEOUT );
-  return status && tmr_is_enabled( base ) ? 1 : 0;
+  return 0;
 }
 
 // ****************************************************************************

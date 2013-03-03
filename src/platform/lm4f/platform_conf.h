@@ -14,10 +14,8 @@
 
 // *****************************************************************************
 // Define here what components you want for this platform
-//#if !defined( ELUA_BOARD_SOLDERCORE )
-  #define BUILD_XMODEM
-  #define BUILD_TERM
-//#endif
+#define BUILD_XMODEM
+#define BUILD_TERM
 
 // defining processor part
 //TODO: make this code more reliable
@@ -28,9 +26,7 @@
 #define BUILD_MMCFS
 
 // TODO: I'll leave USB CDC disabled. This will change in future.
-//#if defined( ELUA_BOARD_SOLDERCORE )
-//  #define BUILD_USB_CDC
-//#endif
+//#define BUILD_USB_CDC
 
 #define BUILD_LINENOISE
 
@@ -75,7 +71,7 @@
 #define PS_LIB_TABLE_NAME   "lm4f"
 #endif
 
-// TODO: Adapt or remove these CANLINE and PWNLINE defines
+// TODO: Adapt this CANLINE define
 #if defined( FORLM3S8962 ) || defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
 #define CANLINE  _ROM( AUXLIB_CAN, luaopen_can, can_map )
 #define BUILD_CAN
@@ -83,6 +79,7 @@
 #define CANLINE
 #endif
 
+// TODO: Adapt this PWMLINE define
 #ifdef FORLM3S6918
 #define PWMLINE
 #else
@@ -149,46 +146,23 @@
 // Configuration data
 
 // Virtual timers (0 if not used)
-#define VTMR_NUM_TIMERS       0
-#define VTMR_FREQ_HZ          5
+#define VTMR_NUM_TIMERS		0
+#define VTMR_FREQ_HZ		5
 
 // Number of resources (0 if not available/not implemented)
-// TODO: Study the amount of resources of LM4F120H5QR. The code below, until the end of file,
-// was left almost untouched.
-#if defined(FORLM3S1968)
-  #define NUM_PIO             8
-#elif defined(FORLM3S9B92) || defined( FORLM3S9D92 )
-  #define NUM_PIO             9
-#else
-  #define NUM_PIO             6
-#endif
-#if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
-  #define NUM_SPI            2
-#else
-  #define NUM_SPI            1
-#endif
-#if defined( FORLM3S6965 )
-  #define NUM_UART            3
-#elif defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
-  #define NUM_UART            3
-#else
+// TODO: Study the amount of resources of LM4F120H5QR and verify the code
+//		 written below (until the end of file)
+
+#define NUM_PIO				6
+#define NUM_SPI				1
+
 // TODO: Only UART0 is configured at this moment, so left 1 below.
-  #define NUM_UART            1
-#endif
-#define NUM_TIMER             4
-#if defined( FORLM3S6918 )
-  #define NUM_PWM             0
-#elif defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
-  #define NUM_PWM             8
-#else
-  #define NUM_PWM             6
-#endif  
-#if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
-#define NUM_ADC               16
-#else
-#define NUM_ADC               4
-#endif
-#define NUM_CAN               1
+#define NUM_UART			1
+
+#define NUM_TIMER			1
+#define NUM_PWM				1
+#define NUM_ADC             1
+#define NUM_CAN				1
 
 // Enable RX buffering on UART
 #define BUF_ENABLE_UART
@@ -207,27 +181,11 @@
 #define RPC_UART_ID           CON_UART_ID
 #define RPC_UART_SPEED        CON_UART_SPEED
 
-#if defined( ELUA_BOARD_EKLM3S6965 )
-  // EK-LM3S6965
-  #define MMCFS_CS_PORT                3
-  #define MMCFS_CS_PIN                 0
-  #define MMCFS_SPI_NUM                0
-#elif defined( ELUA_BOARD_EKLM3S8962 )
-  // EK-LM3S8962
-  #define MMCFS_CS_PORT                6
-  #define MMCFS_CS_PIN                 0
-  #define MMCFS_SPI_NUM                0
-#elif defined( ELUA_BOARD_EAGLE100 )
-  // Eagle-100
-  #define MMCFS_CS_PORT                6
-  #define MMCFS_CS_PIN                 1
-  #define MMCFS_SPI_NUM                0
-#elif defined( ELUA_BOARD_SOLDERCORE )
-  // Soldercore
-  #define MMCFS_CS_PORT                6
-  #define MMCFS_CS_PIN                 7
-  #define MMCFS_SPI_NUM                1
-#elif defined( BUILD_MMCFS ) && !defined( MMCFS_SPI_NUM )
+// TODO: MMCFS not supported yet
+//#define MMCFS_CS_PORT                6
+//#define MMCFS_CS_PIN                 7
+//#define MMCFS_SPI_NUM                1
+#if defined( BUILD_MMCFS ) && !defined( MMCFS_SPI_NUM )
   #warning "MMCFS was enabled, but required SPI & CS data are undefined, disabling MMCFS"
   #undef BUILD_MMCFS
 #endif
@@ -242,30 +200,19 @@
 // #define PIO_PINS_PER_PORT (n) if each port has the same number of pins, or
 // #define PIO_PIN_ARRAY { n1, n2, ... } to define pins per port in an array
 // Use #define PIO_PINS_PER_PORT 0 if this isn't needed
-#if defined(FORLM3S1968)
-  #define PIO_PIN_ARRAY         { 8, 8, 8, 4, 4, 8, 8, 4}
-#elif defined(FORLM3S9B92) || defined( FORLM3S9D92 )
-  #define PIO_PIN_ARRAY         { 8, 8, 8, 8, 8, 6, 8, 8, 8 }
-#else
 // TODO: must review this PIO_PIN_ARRAY. I changed him based on LM4F_ALTERNATE_FUNCTIONS.
-  #define PIO_PIN_ARRAY         { 8, 8, 8, 8, 6, 5 }
-#endif
-//                                A, B, C, D, E, F, G, H, J
+#define PIO_PIN_ARRAY         { 8, 8, 8, 8, 6, 5 }
+//                              A, B, C, D, E, F
 
-#if defined( FORLM3S9B92 ) || defined( FORLM3S9D92 )
-  #define SRAM_SIZE ( 0x18000 )
-#else
-  #define SRAM_SIZE ( 0x08000 )
-#endif
+#define SRAM_SIZE ( 0x08000 )
 
-// Flash data (only for LM3S8962 for now)
-//#ifdef ELUA_CPU_LM3S8962
+// Flash data
+// TODO: Verify this for LM4F120H5QR
 #define INTERNAL_FLASH_SIZE             ( 256 * 1024 )
 #define INTERNAL_FLASH_WRITE_UNIT_SIZE  4
 #define INTERNAL_FLASH_SECTOR_SIZE      1024
 #define INTERNAL_FLASH_START_ADDRESS    0
 #define BUILD_WOFS
-//#endif // #ifdef ELUA_CPU_LM3S8962
 
 // Allocator data: define your free memory zones here in two arrays
 // (start address and end address)

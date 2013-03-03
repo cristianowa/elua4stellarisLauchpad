@@ -7,17 +7,19 @@ comp.Append(CPPPATH = ['src/platform/%s/inc' % platform])
 comp.Append(CPPPATH = ['src/platform/%s/driverlib' % platform])
 
 # The microcontroller LM4F120H5QR supports USB CDC
-comp.Append(CPPPATH = ['src/platform/%s/usblib' % platform])
-comp.Append(CPPPATH = ['src/platform/%s/usblib/device' % platform])
+# TODO: USB CDC will be left disabled at this moment
+#comp.Append(CPPPATH = ['src/platform/%s/usblib' % platform])
+#comp.Append(CPPPATH = ['src/platform/%s/usblib/device' % platform])
 
 fwlib_files = " ".join(glob.glob("src/platform/%s/driverlib/*.c" % platform))
 
 specific_files = "startup_gcc.c platform.c platform_int.c lm4f_pio.c"
 
 # The microcontroller LM4F120H5QR supports USB CDC
-fwlib_files = fwlib_files + " " + " ".join(glob.glob("src/platform/%s/usblib/*.c" % platform))
-fwlib_files = fwlib_files + " " + " ".join(glob.glob("src/platform/%s/usblib/device/*.c" % platform))
-specific_files = specific_files + " usb_serial_structs.c"
+# TODO: USB CDC will be left disabled at this moment
+#fwlib_files = fwlib_files + " " + " ".join(glob.glob("src/platform/%s/usblib/*.c" % platform))
+#fwlib_files = fwlib_files + " " + " ".join(glob.glob("src/platform/%s/usblib/device/*.c" % platform))
+#specific_files = specific_files + " usb_serial_structs.c"
 
 ldscript = "lm4f.ld"
 

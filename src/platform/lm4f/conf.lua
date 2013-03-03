@@ -4,16 +4,18 @@ addi( sf( 'src/platform/%s/inc', platform ) )
 addi( sf( 'src/platform/%s/driverlib', platform ) )
 
 -- The microcontroller LM4F120H5QR supports USB CDC
-addi( sf( 'src/platform/%s/usblib', platform ) )
-addi( sf( 'src/platform/%s/usblib/device', platform ) )
+-- TODO: USB CDC will be left disabled at this moment
+--addi( sf( 'src/platform/%s/usblib', platform ) )
+--addi( sf( 'src/platform/%s/usblib/device', platform ) )
 
 specific_files = "startup_gcc.c platform.c platform_int.c lm4f_pio.c"
 local fwlib_files = utils.get_files( "src/platform/" .. platform .. "/driverlib", ".*%.c$" )
 
 -- The microcontroller LM4F120H5QR supports USB CDC
-fwlib_files = fwlib_files .. " " .. utils.get_files( "src/platform/" .. platform .. "/usblib", ".*%.c$" ) 
-fwlib_files = fwlib_files .. " " .. utils.get_files( "src/platform/" .. platform .. "/usblib/device", ".*%.c$" )
-specific_files = specific_files .. "  usb_serial_structs.c"
+-- TODO: USB CDC will be left disabled at this moment
+--fwlib_files = fwlib_files .. " " .. utils.get_files( "src/platform/" .. platform .. "/usblib", ".*%.c$" ) 
+--fwlib_files = fwlib_files .. " " .. utils.get_files( "src/platform/" .. platform .. "/usblib/device", ".*%.c$" )
+--specific_files = specific_files .. "  usb_serial_structs.c"
 
 ldscript = "lm4f.ld"
 

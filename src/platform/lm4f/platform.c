@@ -45,12 +45,13 @@
 #include "driverlib/rom_map.h"
 
 // USB CDC Stuff
+// TODO: USB CDC will be left disabled until it be implemented and tested
 #include "driverlib/usb.h"
-#include "usblib/usblib.h"
-#include "usblib/usbcdc.h"
-#include "usblib/device/usbdevice.h"
-#include "usblib/device/usbdcdc.h"
-#include "usb_serial_structs.h"
+//#include "usblib/usblib.h"
+//#include "usblib/usbcdc.h"
+//#include "usblib/device/usbdevice.h"
+//#include "usblib/device/usbdcdc.h"
+//#include "usb_serial_structs.h"
 
 // TODO: Verify the defines below (SYSTICK defines)
 // NOTE: when using virtual timers, SYSTICKHZ and VTMR_FREQ_HZ should have the
@@ -80,30 +81,34 @@ int platform_init()
   pios_init();
 
   // Setup SSIs
-  spis_init();
+  // TODO: SPIs not implemented yet.
+  //spis_init();
 
   // Setup UARTs
   uarts_init();
 
   // Setup timers
-  // TODO: The Virtual Timers will be left disabled at this moment.
+  // TODO: The timers will be left disabled until implemented.
   //timers_init();
 
   // Setup PWMs
-  pwms_init();
+  // TODO: PWN not implemented yet.
+  //pwms_init();
 
 #ifdef BUILD_ADC
   // Setup ADCs
-  adcs_init();
+  // TODO: ADCs not implemented yet.
+  //adcs_init();
 #endif
 
 #ifdef BUILD_CAN
   // Setup CANs
-  cans_init();
+  // TODO: CANs not implemented yet.
+  //cans_init();
 #endif
 
   // Setup USB
-  // TODO: The USB will be left disabled at this moment.
+  // TODO: The USB will be left disabled until implemented.
   //usb_init();
 
   // Setup system timer
@@ -115,14 +120,13 @@ int platform_init()
   cmn_platform_init();
 
   // Virtual timers
-  // If the ethernet controller is used the timer is already initialized, so skip this sequence
-  // TODO: Verify this for LM4F120H5QR.
 #if VTMR_NUM_TIMERS > 0
   // Configure SysTick for a periodic interrupt.
-  MAP_SysTickPeriodSet( MAP_SysCtlClockGet() / SYSTICKHZ );
-  MAP_SysTickEnable();
-  MAP_SysTickIntEnable();
-  MAP_IntMasterEnable();
+  // TODO: Virtual timers not implemented yet.
+  //MAP_SysTickPeriodSet( MAP_SysCtlClockGet() / SYSTICKHZ );
+  //MAP_SysTickEnable();
+  //MAP_SysTickIntEnable();
+  //MAP_IntMasterEnable();
 #endif
 
   // TODO: Verify this for LM4F120H5QR.
@@ -344,109 +348,49 @@ int platform_s_uart_set_flow_control( unsigned id, int type )
 
 // ****************************************************************************
 // Timers
-// TODO: This Timers code was left mainly unchanged. Must study LM4F120H5QR timers and change/review this code.
+// TODO: Must implement support for timers.
 
-// All possible LM3S timers defs
-const u32 timer_base[] = { TIMER0_BASE, TIMER1_BASE, TIMER2_BASE, TIMER3_BASE };
-static const u32 timer_sysctl[] = { SYSCTL_PERIPH_TIMER0, SYSCTL_PERIPH_TIMER1, SYSCTL_PERIPH_TIMER2, SYSCTL_PERIPH_TIMER3 };
+// This variable was left because is referred in other files.
+const u32 timer_base[];
 
 static void timers_init()
 {
-  unsigned i;
 
-  for( i = 0; i < NUM_TIMER; i ++ )
-  {
-    MAP_SysCtlPeripheralEnable(timer_sysctl[ i ]);
-    MAP_TimerConfigure(timer_base[ i ], TIMER_CFG_32_BIT_PER);
-    MAP_TimerEnable(timer_base[ i ], TIMER_A);
-  }
 }
 
 void platform_s_timer_delay( unsigned id, timer_data_type delay_us )
 {
-  timer_data_type final;
-  u32 base = timer_base[ id ];
 
-  final = 0xFFFFFFFF - ( ( ( u64 )delay_us * MAP_SysCtlClockGet() ) / 1000000 );
-  MAP_TimerLoadSet( base, TIMER_A, 0xFFFFFFFF );
-  while( MAP_TimerValueGet( base, TIMER_A ) > final );
 }
 
 timer_data_type platform_s_timer_op( unsigned id, int op,timer_data_type data )
 {
-  u32 res = 0;
-  u32 base = timer_base[ id ];
-
-  data = data;
-  switch( op )
-  {
-    case PLATFORM_TIMER_OP_START:
-      res = 0xFFFFFFFF;
-      MAP_TimerControlTrigger(base, TIMER_A, false);
-      MAP_TimerLoadSet( base, TIMER_A, 0xFFFFFFFF );
-      break;
-
-    case PLATFORM_TIMER_OP_READ:
-      res = MAP_TimerValueGet( base, TIMER_A );
-      break;
-
-    case PLATFORM_TIMER_OP_SET_CLOCK:
-    case PLATFORM_TIMER_OP_GET_CLOCK:
-      res = MAP_SysCtlClockGet();
-      break;
-
-    case PLATFORM_TIMER_OP_GET_MAX_CNT:
-      res = 0xFFFFFFFF;
-      break;
-
-  }
-  return res;
+  return 0;
 }
 
 u64 platform_timer_sys_raw_read()
 {
-  return MAP_SysTickPeriodGet() - 1 - MAP_SysTickValueGet();
+
 }
 
 void platform_timer_sys_disable_int()
 {
-  MAP_SysTickIntDisable();
+
 }
 
 void platform_timer_sys_enable_int()
 {
-  MAP_SysTickIntEnable();
+
 }
 
 timer_data_type platform_timer_read_sys()
 {
-  return cmn_systimer_get();
+
 }
 
 u8 lm4f_timer_int_periodic_flag[ NUM_TIMER ];
 int platform_s_timer_set_match_int( unsigned id, timer_data_type period_us, int type )
 {
-  u32 base = timer_base[ id ];
-  u64 final;
-
-  if( period_us == 0 )
-  {
-    MAP_TimerDisable( base, TIMER_A );
-    MAP_TimerIntDisable( base, TIMER_TIMA_TIMEOUT );
-    MAP_TimerIntClear( base, TIMER_TIMA_TIMEOUT );
-    MAP_TimerLoadSet( base, TIMER_A, 0xFFFFFFFF );
-    MAP_TimerEnable( base, TIMER_A );
-    return PLATFORM_TIMER_INT_OK;
-  }
-  final = ( ( u64 )period_us * MAP_SysCtlClockGet() ) / 1000000;
-  if( final == 0 )
-    return PLATFORM_TIMER_INT_TOO_SHORT;
-  if( final > 0xFFFFFFFFULL )
-    return PLATFORM_TIMER_INT_TOO_LONG;
-  lm4f_timer_int_periodic_flag[ id ] = type;
-  MAP_TimerDisable( base, TIMER_A );
-  MAP_TimerIntClear( base, TIMER_TIMA_TIMEOUT );
-  MAP_TimerLoadSet( base, TIMER_A, ( u32 )final - 1 );
   return PLATFORM_TIMER_INT_OK;
 }
 
@@ -539,106 +483,26 @@ int platform_adc_start_sequence()
 
 static void usb_init()
 {
-  USBBufferInit( &g_sTxBuffer );
-  USBBufferInit( &g_sRxBuffer );
 
-  // Pass the device information to the USB library and place the device
-  // on the bus.
-  USBDCDCInit( 0, &g_sCDCDevice );
 }
 
 void platform_usb_cdc_send( u8 data )
 {
-  USBBufferWrite( &g_sTxBuffer, &data, 1 );
+
 }
 
 int platform_usb_cdc_recv( s32 timeout )
 {
-  unsigned char data;
-  unsigned long read;
 
-  // Try to read one byte from buffer, if none available return -1 or
-  // retry if timeout
-  // FIXME: Respect requested timeout
-  do {
-    read = USBBufferRead(&g_sRxBuffer, &data, 1);
-  } while( read == 0 && timeout != 0 );
-
-  if( read == 0 )
-    return -1;
-  else
-    return data;
 }
 
 unsigned long TxHandler(void *pvCBData, unsigned long ulEvent, unsigned long ulMsgValue, void *pvMsgData)
 {
-  // Which event was sent?
-  switch(ulEvent)
-  {
-    case USB_EVENT_TX_COMPLETE:
-    {
-        // Nothing to do, already handled by USBBuffer
-        break;
-    }
-      
-    default:
-        break;
-  }
-  
   return(0);
 }
 
 unsigned long RxHandler(void *pvCBData, unsigned long ulEvent, unsigned long ulMsgValue, void *pvMsgData)
 {
-  unsigned long ulCount;
-  unsigned char ucChar;
-  unsigned long ulRead;
-
-
-  // Which event was sent?
-  switch(ulEvent)
-  {
-    // A new packet has been received.
-    case USB_EVENT_RX_AVAILABLE:
-    {
-      break;
-    }
-
-    //
-    // This is a request for how much unprocessed data is still waiting to
-    // be processed.  Return 0 if the UART is currently idle or 1 if it is
-    // in the process of transmitting something.  The actual number of
-    // bytes in the UART FIFO is not important here, merely whether or
-    // not everything previously sent to us has been transmitted.
-    //
-    case USB_EVENT_DATA_REMAINING:
-    {
-      //
-      // Get the number of bytes in the buffer and add 1 if some data
-      // still has to clear the transmitter.
-      //
-      return(0);
-    }
-
-    //
-    // This is a request for a buffer into which the next packet can be
-    // read.  This mode of receiving data is not supported so let the
-    // driver know by returning 0.  The CDC driver should not be sending
-    // this message but this is included just for illustration and
-    // completeness.
-    //
-    case USB_EVENT_REQUEST_BUFFER:
-    {
-      return(0);
-    }
-
-    // Other events can be safely ignored.
-    default:
-    {
-      break;
-    }
-  }
-
   return(0);
 }
 
@@ -646,77 +510,6 @@ unsigned long
 ControlHandler(void *pvCBData, unsigned long ulEvent, unsigned long ulMsgValue,
                void *pvMsgData)
 {
-  switch(ulEvent) // Check event
-  {
-    // The host has connected.
-    case USB_EVENT_CONNECTED:
-    {
-      USBBufferFlush(&g_sTxBuffer);
-      USBBufferFlush(&g_sRxBuffer);
-      break;
-    }
-
-    
-    // The host has disconnected.
-    
-    case USB_EVENT_DISCONNECTED:
-    {
-      break;
-    }
-    
-    // Return the current serial communication parameters.
-    case USBD_CDC_EVENT_GET_LINE_CODING:
-    {
-      break;
-    }
-
-    // Set the current serial communication parameters.
-    case USBD_CDC_EVENT_SET_LINE_CODING:
-    {
-      break;
-    }
-
-    
-    // Set the current serial communication parameters.
-    case USBD_CDC_EVENT_SET_CONTROL_LINE_STATE:
-    {
-      break;
-    }
-
-    //
-    // Send a break condition on the serial line.
-    //
-    case USBD_CDC_EVENT_SEND_BREAK:
-    {
-      break;
-    }
-
-    //
-    // Clear the break condition on the serial line.
-    //
-    case USBD_CDC_EVENT_CLEAR_BREAK:
-    {
-      break;
-    }
-
-    //
-    // Ignore SUSPEND and RESUME for now.
-    //
-    case USB_EVENT_SUSPEND:
-    case USB_EVENT_RESUME:
-    {
-      break;
-    }
-
-    //
-    // Other events can be safely ignored.
-    //
-    default:
-    {
-      break;
-    }
-  }
-
   return(0);
 }
 
