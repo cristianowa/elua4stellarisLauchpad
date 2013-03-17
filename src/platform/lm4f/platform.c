@@ -39,6 +39,7 @@
 #include "utils.h"
 
 // Target is LM4F120H5QR
+//TODO should be protected by ifdef
 #include "lm4f120h5qr.h"
 
 #include "driverlib/rom.h"

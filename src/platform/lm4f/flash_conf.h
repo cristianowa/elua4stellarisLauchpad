@@ -12,6 +12,7 @@
 #define INTERNAL_FLASH_WRITE_UNIT_SIZE  4
 #define INTERNAL_FLASH_START_ADDRESS    0
 
+//TODO: We shall protect this sizes with ELUA_CPU_LM120QR
 // Considering board EK-LM4F120XL having 256KB
 #define INTERNAL_FLASH_SIZE             ( 256 * 1024 )
 #define INTERNAL_FLASH_CONFIGURED
