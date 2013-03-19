@@ -43,7 +43,7 @@ extern void UARTIntHandler();
 
 #include "hw_memmap.h"
 #include "platform_conf.h"
-
+#include "inc/hw_nvic.h"
 #if defined( BUILD_CAN )
 extern void CANIntHandler();
 #endif
