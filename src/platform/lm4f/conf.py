@@ -39,7 +39,7 @@ comp.Append(ASFLAGS = ['-x','assembler-with-cpp','-c','-Wall','$_CPPDEFFLAGS'])
 comp.Append(LIBS = ['c','gcc','m'])
 
 # TODO: Consider using thumb2 instruction set. May need to deal with src/platform/ arm files.
-TARGET_FLAGS = ['-mcpu=cortex-m4','-mthumb']
+TARGET_FLAGS = ['-mcpu=cortex-m4','-mthumb','-g']
 
 # Configure General Flags for Target
 comp.Prepend(CCFLAGS = [TARGET_FLAGS,'-mlittle-endian'])
