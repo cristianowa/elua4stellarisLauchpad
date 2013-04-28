@@ -38,18 +38,20 @@ make all
 cp lm4flash $TARGET_BIN_DIR
 cd ../../
 
-#install debuger
+# Install debugger
 git clone git://openocd.git.sourceforge.net/gitroot/openocd/openocd
 cd openocd
 git pull http://openocd.zylin.com/openocd refs/changes/22/922/10
-./bootstrap/
+./bootstrap
 ./configure --enable-maintainer-mode  --enable-ti-icdi
 make
+cd ..
 cp -r ./openocd/tcl/* $TARGET_BIN_DIR
 cp ./openocd/src/openocd $TARGET_BIN_DIR
 cp elua4stellarisLauchpad/lm4f10xl.cfg $TARGET_BIN_DIR
 echo 'cd '$TARGET_BIN_DIR' && openocd --file lm4f10xl.cfg  '>>$TARGET_BIN_DIR/openocd-lm4f
 chmod +x $TARGET_BIN_DIR/openocd-lm4f
+
 # Try to compile elua to check if it is all right
 cd elua4stellarisLauchpad
 scons -f cross-lua.py
